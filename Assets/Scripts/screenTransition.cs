@@ -7,27 +7,16 @@ public class screenTransition : MonoBehaviour {
     public float val;
 
     [SerializeField]
-    private Material transitionA, transitionB;
-    [SerializeField]
     private Camera camA, camB;
 
     public float multi;
-    public bool move;
     bool b;
 	// Update is called once per frame
 	void Update ()
     {
-        if (move)
+        if(TouchInput.instance.IsTouched())
         {
-            if (b)
-                val = val + Time.deltaTime < 1 ? val + Time.deltaTime : 1;
-            else
-                val = val - Time.deltaTime > 0 ? val - Time.deltaTime : 0;
-
-            if (val == 1)
-                b = false;
-            if (val == 0)
-                b = true;
+            val = TouchInput.instance.GetTouchScreen().x;
         }
 
         camA.transform.position = new Vector2(camA.orthographicSize * val * multi, 0);
@@ -39,8 +28,5 @@ public class screenTransition : MonoBehaviour {
         var CamBRect = camB.rect;
         CamBRect.xMax = val;
         camB.rect = CamBRect;
-
-        transitionA.SetFloat("_SliceAmount", val);
-        transitionB.SetFloat("_SliceAmount", 1 - val);
     }
 }

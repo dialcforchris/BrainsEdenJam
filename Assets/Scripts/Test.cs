@@ -6,7 +6,7 @@ public class Test : MonoBehaviour
     bool greyWorld = true;
     void Awake()
     {
-        Physics2D.IgnoreLayerCollision(8, 10, true);
+       
     }
 	
 	void Update ()
