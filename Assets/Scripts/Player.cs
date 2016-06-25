@@ -7,13 +7,12 @@ public class Player : MonoBehaviour
     private bool inGreyWorld = true;
 
     public Transform StartPoint;
-    public Vector2 startPos;
     float speed = 6;
     ParticleSystem ps;
 
     private void Awake()
     {
-        
+        transform.position = StartPoint.position;
         ps = GetComponent<ParticleSystem>();
         //transform.position = startPos;
         Physics2D.IgnoreLayerCollision(8, 10, true);
@@ -103,7 +102,7 @@ public class Player : MonoBehaviour
     public void Die()
     {
         //do a death and....
-        transform.position = startPos;
+        transform.position = StartPoint.position;
     }
     public enum PlayerStates
     {
