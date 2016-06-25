@@ -15,13 +15,21 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody = null;
     [SerializeField]
     private Transform frontPivot = null;
+      float AccelerometerUpdateInterval =  200;
+float LowPassWidthInSeconds = 1f;
 
+private float LowPassFilterFactor;// = AccelerometerUpdateInterval / LowPassKernelWidthInSeconds; // tweakable
+private Vector3  lowPassValue = Vector3.zero;
     private void Awake()
     {
+        LowPassFilterFactor = AccelerometerUpdateInterval / LowPassWidthInSeconds; 
         transform.position = StartPoint.position;
         ps = GetComponent<ParticleSystem>();
+            lowPassValue = Input.acceleration;
+
         //transform.position = startPos;
         Physics2D.IgnoreLayerCollision(8, 10, true);
+      
     }
 	
 	// Update is called once per frame
@@ -63,8 +71,8 @@ public class Player : MonoBehaviour
             accInput.Normalize();
         }
         rigidBody.AddForce(accInput * Time.deltaTime * speed);
-        
-        transform.rotation = Quaternion.LookRotation(Vector3.forward, accInput);
+
+        transform.rotation = Quaternion.LookRotation(transform.forward,LowPassFilterAccelerometer()*Time.deltaTime);
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -126,6 +134,14 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(.25f);
         Destroy(bp);
     }
+   
+
+Vector3 LowPassFilterAccelerometer() 
+{
+    lowPassValue = Vector3.Lerp(lowPassValue, Input.acceleration, LowPassFilterFactor);
+    return lowPassValue;
+}
+       
     public enum PlayerStates
     {
         ACTIVE,
