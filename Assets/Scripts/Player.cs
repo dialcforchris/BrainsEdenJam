@@ -16,17 +16,12 @@ public class Player : MonoBehaviour
     public GameObject deathParticles_colour, deathParticles_grey, birthParticles_grey, birthParticles_colour;
 
     [SerializeField] private Rigidbody2D rigidBody = null;
-<<<<<<< HEAD
       float AccelerometerUpdateInterval =  200;
 float LowPassWidthInSeconds = 1f;
     [SerializeField] private Transform frontPivot = null;
-=======
-    [SerializeField]
-    private Transform frontPivot = null;
-
+    float LowPassFilterFactor;
     [SerializeField]
     private ParticleSystem colourTrail, greyTrail;
->>>>>>> origin/master
 
     private PlayerStates state = PlayerStates.ACTIVE;
     public PlayerStates playerState { get { return state; } }
@@ -36,12 +31,9 @@ float LowPassWidthInSeconds = 1f;
 
     private void Awake()
     {
-<<<<<<< HEAD
         LowPassFilterFactor = AccelerometerUpdateInterval / LowPassWidthInSeconds; 
-=======
         tempMoveSpeed = moveSpeed;
         tempSpeed = speed;
->>>>>>> origin/master
         player = this;
         transform.position = StartPoint.position;
         //transform.position = startPos;
