@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour 
 {
+    private static Player player = null;
+    public static Player instance { get { return player; } }
+
     private bool inGreyWorld = true;
 
     public Transform StartPoint;
@@ -13,16 +16,30 @@ public class Player : MonoBehaviour
     ParticleSystem ps;
 
     [SerializeField] private Rigidbody2D rigidBody = null;
+<<<<<<< HEAD
     [SerializeField]
     private Transform frontPivot = null;
       float AccelerometerUpdateInterval =  200;
 float LowPassWidthInSeconds = 1f;
+=======
+    [SerializeField] private Transform frontPivot = null;
+
+    private PlayerStates state = PlayerStates.ACTIVE;
+    public PlayerStates playerState { get { return state; } }
+
+    [SerializeField] private SpriteRenderer greyRenderer = null;
+    [SerializeField] private SpriteRenderer colourRenderer = null;
+>>>>>>> origin/master
 
 private float LowPassFilterFactor;// = AccelerometerUpdateInterval / LowPassKernelWidthInSeconds; // tweakable
 private Vector3  lowPassValue = Vector3.zero;
     private void Awake()
     {
+<<<<<<< HEAD
         LowPassFilterFactor = AccelerometerUpdateInterval / LowPassWidthInSeconds; 
+=======
+        player = this;
+>>>>>>> origin/master
         transform.position = StartPoint.position;
         ps = GetComponent<ParticleSystem>();
             lowPassValue = Input.acceleration;
@@ -35,6 +52,9 @@ private Vector3  lowPassValue = Vector3.zero;
 	// Update is called once per frame
 	void FixedUpdate () 
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+            StartCoroutine(Die());
+
         Movement();
         if (TouchInput.instance.IsTouched())
         {
@@ -109,30 +129,41 @@ private Vector3  lowPassValue = Vector3.zero;
 
     public IEnumerator Die()
     {
-        //do a death and....
-        
+        state = PlayerStates.DEAD;
         float tempMoveSpeed = moveSpeed;
         float tempSpeed = speed;
-        GetComponent<SpriteRenderer>().enabled = false;
+        greyRenderer.enabled = false;
+        colourRenderer.enabled = false;
         ps.Stop();
         moveSpeed = 0;
         speed = 0;
-        GameObject dp= Instantiate(deathParticles,transform.position,transform.rotation) as GameObject;
-        screenTransition.instance.Shake(0.75f);
+        GameObject dp = Instantiate(deathParticles, transform.position, transform.rotation) as GameObject;
+        GameObject dp2 = Instantiate(dp) as GameObject;
+        dp.layer = 8;
+        dp2.layer = 9;
+        dp2.GetComponent<ParticleSystem>().startColor = Color.black;
+        StartCoroutine(screenTransition.instance.Shake(.25f));
         yield return new WaitForSeconds(2);
         Destroy(dp);
 
-
         transform.position = StartPoint.position;
         GameObject bp = Instantiate(birthParticles, transform.position, transform.rotation) as GameObject;
+        bp.layer = 8;
+        GameObject bp2 = Instantiate(birthParticles, transform.position, transform.rotation) as GameObject;
+        bp2.layer = 9;
+        bp2.GetComponent<ParticleSystem>().startColor = Color.white;
+
         yield return new WaitForSeconds(.75f);
         moveSpeed = tempMoveSpeed;
         speed = tempSpeed;
         ps.Play();
-        GetComponent<SpriteRenderer>().enabled = true;
+        greyRenderer.enabled = true;
+        colourRenderer.enabled = true;
 
         yield return new WaitForSeconds(.25f);
         Destroy(bp);
+        Destroy(bp2);
+        state = PlayerStates.ACTIVE;
     }
    
 
@@ -152,7 +183,6 @@ Vector3 LowPassFilterAccelerometer()
     {
         if (_col.tag == "KillArea")
         {
-            Debug.Log("kill ");
             StartCoroutine("Die");
         }
     }

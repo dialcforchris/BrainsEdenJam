@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class screenTransition : MonoBehaviour {
@@ -15,6 +16,7 @@ public class screenTransition : MonoBehaviour {
     [SerializeField]
     private Texture[] transitionTextures;
     public SpriteRenderer transitionSprite;
+        public Image colourBackground;
 
     public float multi,offZet,velocity;
     bool currentSide = true; //False can be left, true for right
@@ -58,20 +60,24 @@ public class screenTransition : MonoBehaviour {
         }
     }
 
+    Vector3 shakeOffset;
+
     public IEnumerator Shake(float duration)
     {
         float timer = 0;
         while (timer < duration)
         {
             timer += Time.deltaTime;
-            transform.position = new Vector2(Mathf.Sin(Random.value), Mathf.Sin(Random.value));
+            shakeOffset= new Vector2(Mathf.Sin(Random.value), Mathf.Sin(Random.value));
+            transform.position = shakeOffset;
             yield return new WaitForEndOfFrame();
         }
+        shakeOffset = Vector3.zero;
+        transform.position = Vector3.zero;
     }
 
     void Update()
     {
-        
         bool touchTarget  =  TouchInput.instance.GetTouchScreen().x<0.5 ? true : false;
         //bool target = Input.mousePosition.x / Screen.width < 0.5f ? true : false;
        ////val = Input.mousePosition.x / Screen.width;
@@ -147,19 +153,24 @@ public class screenTransition : MonoBehaviour {
         if (val != previousVal)
             moveScreenSlider();
     }
+    //void Update()
+    //{
+    //    moveScreenSlider();
+    //}
 
     void moveScreenSlider()
     {
-        camA.transform.position = new Vector3(camA.orthographicSize * val * multi, 0, offZet);
+        camA.transform.position = new Vector3((camA.orthographicSize * val * multi )+ shakeOffset.x, shakeOffset.y, offZet);
         Rect a = camA.rect;
         a.xMin = val;
         camA.rect = a;
 
-        camB.transform.position = new Vector3(camA.orthographicSize * (1 - val) * multi * -1, 0, offZet);
+        camB.transform.position = new Vector3((camA.orthographicSize * (1 - val) * multi * -1)+shakeOffset.x, shakeOffset.y, offZet);
         Rect CamBRect = camB.rect;
         CamBRect.xMax = val;
         camB.rect = CamBRect;
-
+        
+        colourBackground.fillAmount = val;
         previousVal = val;
     }
 }
