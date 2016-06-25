@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer greyRenderer = null;
     [SerializeField] private SpriteRenderer colourRenderer = null;
 
+    private bool changingWorld = false;
+
     private void Awake()
     {
         tempMoveSpeed = moveSpeed;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate () 
     {
+        changingWorld = false;
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Die());
 
@@ -108,6 +111,7 @@ public class Player : MonoBehaviour
     {
         if (inGreyWorld != _world)
         {
+            changingWorld = true;
             inGreyWorld = _world;
             Physics2D.IgnoreLayerCollision(8, 10, inGreyWorld);
             Physics2D.IgnoreLayerCollision(9, 10, !inGreyWorld);
@@ -163,7 +167,10 @@ public class Player : MonoBehaviour
     {
         if (_col.tag == "KillArea")
         {
-            StartCoroutine("Die");
+            if (changingWorld)
+            {
+                StartCoroutine("Die");
+            }
         }
     }
 
