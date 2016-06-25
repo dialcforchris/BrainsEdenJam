@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     float speed = 6;
     ParticleSystem ps;
 
+    [SerializeField] private Transform frontPivot = null;
+
     private void Awake()
     {
         transform.position = StartPoint.position;
@@ -37,7 +39,7 @@ public class Player : MonoBehaviour
         }
 
         //If the world thing should be transitioning do this
-        if (transform.position.x < Camera.main.ViewportToWorldPoint(new Vector3(screenTransition.instance.val, 0.5f, 10)).x)
+        if (frontPivot.position.x < Camera.main.ViewportToWorldPoint(new Vector3(screenTransition.instance.val, 0.5f, 10)).x)
         {
             SwitchWorld(false);
         }
@@ -60,6 +62,7 @@ public class Player : MonoBehaviour
         }
         transform.position += accInput * Time.deltaTime * speed;
         transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
+        transform.rotation = Quaternion.LookRotation(Vector3.forward, accInput);
         if (Vector3.Distance(Vector3.zero, transform.position) > 25)
             transform.position = Vector3.zero;
     }
@@ -69,21 +72,25 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             transform.position = new Vector3(transform.position.x - (moveSpeed * Time.deltaTime), transform.position.y, 0.0f);
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
             //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x - moveSpeed * Time.deltaTime, transform.position.y));
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             transform.position = new Vector3(transform.position.x + (moveSpeed * Time.deltaTime), transform.position.y, 0.0f);
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
             //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x + moveSpeed * Time.deltaTime, transform.position.y));
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
             transform.position = new Vector3(transform.position.x, transform.position.y + (moveSpeed * Time.deltaTime), 0.0f);
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
             //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x , transform.position.y + moveSpeed * Time.deltaTime));
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
             transform.position = new Vector3(transform.position.x, transform.position.y - (moveSpeed * Time.deltaTime), 0.0f);
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
             //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x, transform.position.y - moveSpeed * Time.deltaTime));
         }
     }
@@ -109,4 +116,13 @@ public class Player : MonoBehaviour
         ACTIVE,
         DEAD,
     }
+
+    void OnTriggerEnter2D(Collider2D _col)
+    {
+        if (_col.tag == "KillArea")
+        {
+            Die();
+        }
+    }
+
 }
