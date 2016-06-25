@@ -104,6 +104,7 @@ public class screenTransition : MonoBehaviour {
               {
                   currentSide = true;
                   val = 0;
+                  SoundManager.instance.playSound(0);
               }
           }
             //
@@ -172,5 +173,9 @@ public class screenTransition : MonoBehaviour {
         
         colourBackground.fillAmount = val;
         previousVal = val;
+    }
+    public float GetVal()
+    {
+        return val;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour 
 {
+    public AudioClip clip;
     private static Player player = null;
     public static Player instance { get { return player; } }
 
@@ -16,12 +17,8 @@ public class Player : MonoBehaviour
     ParticleSystem ps;
 
     [SerializeField] private Rigidbody2D rigidBody = null;
-<<<<<<< HEAD
-    [SerializeField]
-    private Transform frontPivot = null;
       float AccelerometerUpdateInterval =  200;
 float LowPassWidthInSeconds = 1f;
-=======
     [SerializeField] private Transform frontPivot = null;
 
     private PlayerStates state = PlayerStates.ACTIVE;
@@ -29,17 +26,13 @@ float LowPassWidthInSeconds = 1f;
 
     [SerializeField] private SpriteRenderer greyRenderer = null;
     [SerializeField] private SpriteRenderer colourRenderer = null;
->>>>>>> origin/master
 
 private float LowPassFilterFactor;// = AccelerometerUpdateInterval / LowPassKernelWidthInSeconds; // tweakable
 private Vector3  lowPassValue = Vector3.zero;
     private void Awake()
     {
-<<<<<<< HEAD
         LowPassFilterFactor = AccelerometerUpdateInterval / LowPassWidthInSeconds; 
-=======
         player = this;
->>>>>>> origin/master
         transform.position = StartPoint.position;
         ps = GetComponent<ParticleSystem>();
             lowPassValue = Input.acceleration;
@@ -184,6 +177,7 @@ Vector3 LowPassFilterAccelerometer()
         if (_col.tag == "KillArea")
         {
             StartCoroutine("Die");
+           GetComponent<AudioSource>().PlayOneShot(clip);
         }
     }
 
