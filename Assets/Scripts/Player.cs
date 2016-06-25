@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        tempMoveSpeed = moveSpeed;
+        tempSpeed = speed;
         player = this;
         transform.position = StartPoint.position;
         //transform.position = startPos;
@@ -112,40 +114,44 @@ public class Player : MonoBehaviour
         }
     }
 
+    float tempMoveSpeed;
+    float tempSpeed;
+
     public IEnumerator Die()
     {
-        state = PlayerStates.DEAD;
-        float tempMoveSpeed = moveSpeed;
-        float tempSpeed = speed;
-        greyRenderer.enabled = false;
-        colourRenderer.enabled = false;
-        colourTrail.Stop();
-        greyTrail.Stop();
-        moveSpeed = 0;
-        speed = 0;
-        GameObject dp = Instantiate(deathParticles_colour, transform.position, transform.rotation) as GameObject;
-        GameObject dp2 = Instantiate(deathParticles_grey, transform.position, transform.rotation) as GameObject;
-        StartCoroutine(screenTransition.instance.Shake(.25f));
-        yield return new WaitForSeconds(2);
-        Destroy(dp);
-        Destroy(dp2);
+        if (playerState != PlayerStates.DEAD)
+        {
+            state = PlayerStates.DEAD;
+            greyRenderer.enabled = false;
+            colourRenderer.enabled = false;
+            colourTrail.Stop();
+            greyTrail.Stop();
+            moveSpeed = 0;
+            speed = 0;
+            GameObject dp = Instantiate(deathParticles_colour, transform.position, transform.rotation) as GameObject;
+            GameObject dp2 = Instantiate(deathParticles_grey, transform.position, transform.rotation) as GameObject;
+            StartCoroutine(screenTransition.instance.Shake(.25f));
+            yield return new WaitForSeconds(2);
+            Destroy(dp);
+            Destroy(dp2);
 
-        transform.position = StartPoint.position;
-        GameObject bp = Instantiate(birthParticles_colour, transform.position, transform.rotation) as GameObject;
-        GameObject bp2 = Instantiate(birthParticles_grey, transform.position, transform.rotation) as GameObject;
+            transform.position = StartPoint.position;
+            GameObject bp = Instantiate(birthParticles_colour, transform.position, transform.rotation) as GameObject;
+            GameObject bp2 = Instantiate(birthParticles_grey, transform.position, transform.rotation) as GameObject;
 
-        yield return new WaitForSeconds(.75f);
-        moveSpeed = tempMoveSpeed;
-        speed = tempSpeed;
-        colourTrail.Play();
-        greyTrail.Play();
-        greyRenderer.enabled = true;
-        colourRenderer.enabled = true;
+            yield return new WaitForSeconds(.75f);
+            moveSpeed = tempMoveSpeed;
+            speed = tempSpeed;
+            colourTrail.Play();
+            greyTrail.Play();
+            greyRenderer.enabled = true;
+            colourRenderer.enabled = true;
+            state = PlayerStates.ACTIVE;
 
-        yield return new WaitForSeconds(.25f);
-        Destroy(bp);
-        Destroy(bp2);
-        state = PlayerStates.ACTIVE;
+            yield return new WaitForSeconds(.25f);
+            Destroy(bp);
+            Destroy(bp2);
+        }
     }
     public enum PlayerStates
     {
