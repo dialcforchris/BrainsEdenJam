@@ -129,6 +129,7 @@ float LowPassWidthInSeconds = 1f;
         if (playerState != PlayerStates.DEAD)
         {
             state = PlayerStates.DEAD;
+            GetComponent<AudioSource>().PlayOneShot(clip);
             greyRenderer.enabled = false;
             colourRenderer.enabled = false;
             colourTrail.Stop();
@@ -170,15 +171,10 @@ float LowPassWidthInSeconds = 1f;
     {
         if (_col.tag == "KillArea")
         {
-<<<<<<< HEAD
             if (changingWorld)
             {
                 StartCoroutine("Die");
             }
-=======
-            StartCoroutine("Die");
-           GetComponent<AudioSource>().PlayOneShot(clip);
->>>>>>> origin/master
         }
     }
 
