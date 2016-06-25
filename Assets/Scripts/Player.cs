@@ -16,12 +16,10 @@ public class Player : MonoBehaviour
     ParticleSystem ps;
 
     [SerializeField] private Rigidbody2D rigidBody = null;
-<<<<<<< HEAD
-    [SerializeField]
-    private Transform frontPivot = null;
-      float AccelerometerUpdateInterval =  200;
-float LowPassWidthInSeconds = 1f;
-=======
+
+    float AccelerometerUpdateInterval =  200;
+    float LowPassWidthInSeconds = 1f;
+
     [SerializeField] private Transform frontPivot = null;
 
     private PlayerStates state = PlayerStates.ACTIVE;
@@ -29,17 +27,13 @@ float LowPassWidthInSeconds = 1f;
 
     [SerializeField] private SpriteRenderer greyRenderer = null;
     [SerializeField] private SpriteRenderer colourRenderer = null;
->>>>>>> origin/master
 
-private float LowPassFilterFactor;// = AccelerometerUpdateInterval / LowPassKernelWidthInSeconds; // tweakable
-private Vector3  lowPassValue = Vector3.zero;
+    private float LowPassFilterFactor;// = AccelerometerUpdateInterval / LowPassKernelWidthInSeconds; // tweakable
+    private Vector3  lowPassValue = Vector3.zero;
     private void Awake()
     {
-<<<<<<< HEAD
         LowPassFilterFactor = AccelerometerUpdateInterval / LowPassWidthInSeconds; 
-=======
         player = this;
->>>>>>> origin/master
         transform.position = StartPoint.position;
         ps = GetComponent<ParticleSystem>();
             lowPassValue = Input.acceleration;
@@ -48,6 +42,8 @@ private Vector3  lowPassValue = Vector3.zero;
         Physics2D.IgnoreLayerCollision(8, 10, true);
       
     }
+
+    private bool movingWorld = false;
 	
 	// Update is called once per frame
 	void FixedUpdate () 
@@ -56,11 +52,12 @@ private Vector3  lowPassValue = Vector3.zero;
             StartCoroutine(Die());
 
         Movement();
+        movingWorld = false;
         if (TouchInput.instance.IsTouched())
         {
             Vector2 _v = TouchInput.instance.GetTouchWorldPos();
 
-            if (transform.position.x < _v.x)
+            if (frontPivot.position.x < _v.x)
             {
                 SwitchWorld(false);
             }
@@ -120,6 +117,7 @@ private Vector3  lowPassValue = Vector3.zero;
     {
         if (inGreyWorld != _world)
         {
+            movingWorld = true;
             ps.startColor = !_world ? Color.black : Color.white;
             inGreyWorld = _world;
             Physics2D.IgnoreLayerCollision(8, 10, inGreyWorld);
@@ -183,7 +181,10 @@ Vector3 LowPassFilterAccelerometer()
     {
         if (_col.tag == "KillArea")
         {
-            StartCoroutine("Die");
+            if (movingWorld)
+            {
+                StartCoroutine("Die");
+            }
         }
     }
 
