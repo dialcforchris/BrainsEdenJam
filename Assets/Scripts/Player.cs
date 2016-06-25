@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour 
 {
+    private static Player player = null;
+    public static Player instance { get { return player; } }
+
     private bool inGreyWorld = true;
 
     public Transform StartPoint;
@@ -13,11 +16,17 @@ public class Player : MonoBehaviour
     ParticleSystem ps;
 
     [SerializeField] private Rigidbody2D rigidBody = null;
-    [SerializeField]
-    private Transform frontPivot = null;
+    [SerializeField] private Transform frontPivot = null;
+
+    private PlayerStates state = PlayerStates.ACTIVE;
+    public PlayerStates playerState { get { return state; } }
+
+    [SerializeField] private SpriteRenderer greyRenderer = null;
+    [SerializeField] private SpriteRenderer colourRenderer = null;
 
     private void Awake()
     {
+        player = this;
         transform.position = StartPoint.position;
         ps = GetComponent<ParticleSystem>();
         //transform.position = startPos;
@@ -104,9 +113,11 @@ public class Player : MonoBehaviour
 
     public IEnumerator Die()
     {
+        state = PlayerStates.DEAD;
         float tempMoveSpeed = moveSpeed;
         float tempSpeed = speed;
-        GetComponent<SpriteRenderer>().enabled = false;
+        greyRenderer.enabled = false;
+        colourRenderer.enabled = false;
         ps.Stop();
         moveSpeed = 0;
         speed = 0;
@@ -114,7 +125,7 @@ public class Player : MonoBehaviour
         GameObject dp2 = Instantiate(dp) as GameObject;
         dp.layer = 8;
         dp2.layer = 9;
-        dp2.GetComponent<ParticleSystem>().startColor = Color.white;
+        dp2.GetComponent<ParticleSystem>().startColor = Color.black;
         StartCoroutine(screenTransition.instance.Shake(.25f));
         yield return new WaitForSeconds(2);
         Destroy(dp);
@@ -130,11 +141,13 @@ public class Player : MonoBehaviour
         moveSpeed = tempMoveSpeed;
         speed = tempSpeed;
         ps.Play();
-        GetComponent<SpriteRenderer>().enabled = true;
+        greyRenderer.enabled = true;
+        colourRenderer.enabled = true;
 
         yield return new WaitForSeconds(.25f);
         Destroy(bp);
         Destroy(bp2);
+        state = PlayerStates.ACTIVE;
     }
     public enum PlayerStates
     {
@@ -146,7 +159,6 @@ public class Player : MonoBehaviour
     {
         if (_col.tag == "KillArea")
         {
-            Debug.Log("kill ");
             StartCoroutine("Die");
         }
     }

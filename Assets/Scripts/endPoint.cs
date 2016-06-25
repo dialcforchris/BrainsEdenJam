@@ -5,6 +5,7 @@ public class endPoint : MonoBehaviour {
 
     SpriteRenderer sr;
     public int levelIndextoLoad;
+
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -36,7 +37,7 @@ public class endPoint : MonoBehaviour {
         }
         if (thing && !levelFinished)
         {
-            if (thing.GetComponent<SpriteRenderer>().enabled)
+            if (Player.instance.playerState != Player.PlayerStates.DEAD)
             {
                 if (Vector3.Distance(thing.transform.position, transform.position) < .2f)
                 {

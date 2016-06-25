@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class screenTransition : MonoBehaviour {
@@ -15,6 +16,7 @@ public class screenTransition : MonoBehaviour {
     [SerializeField]
     private Texture[] transitionTextures;
     public SpriteRenderer transitionSprite;
+        public Image colourBackground;
 
     public float multi,offZet,velocity;
     bool currentSide = true; //False can be left, true for right
@@ -151,7 +153,11 @@ public class screenTransition : MonoBehaviour {
         if (val != previousVal)
             moveScreenSlider();
     }
-    
+    //void Update()
+    //{
+    //    moveScreenSlider();
+    //}
+
     void moveScreenSlider()
     {
         camA.transform.position = new Vector3((camA.orthographicSize * val * multi )+ shakeOffset.x, shakeOffset.y, offZet);
@@ -163,7 +169,8 @@ public class screenTransition : MonoBehaviour {
         Rect CamBRect = camB.rect;
         CamBRect.xMax = val;
         camB.rect = CamBRect;
-
+        
+        colourBackground.fillAmount = val;
         previousVal = val;
     }
 }
