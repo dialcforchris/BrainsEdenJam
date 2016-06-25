@@ -12,19 +12,56 @@ public class screenTransition : MonoBehaviour {
     [SerializeField]
     private Camera camA, camB;
 
+    [SerializeField]
+    private Texture[] transitionTextures;
+    public SpriteRenderer transitionSprite;
+
     public float multi,offZet,velocity;
     bool LastDir; //False can be left, true for right
 
     Vector2 previousTouchPos;
     void Awake()
     {
+        StartCoroutine(screenTransitioner(true));
         moveScreenSlider();
         instance = this;
     }
 
-	void Update ()
+    public IEnumerator screenTransitioner(bool inOut, int level = -99)//True = in, false = out
     {
-        if(TouchInput.instance.IsTouched())
+        transitionSprite.material.SetTexture("_SliceGuide",transitionTextures[Random.Range(0, transitionTextures.Length)]);
+
+        float lerpy = 1;
+        
+
+        if (!inOut)
+        {
+            while (lerpy > 0)
+            {
+                lerpy -= Time.deltaTime * 1;
+                transitionSprite.material.SetFloat("_SliceAmount", lerpy);
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        else
+        {
+            lerpy = 0;
+            while (lerpy < 1)
+            {
+                lerpy += Time.deltaTime * 1;
+                transitionSprite.material.SetFloat("_SliceAmount", lerpy);
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        if (level != -99)
+        {
+            Application.LoadLevel(level);
+        }
+    }
+
+    void Update()
+    {
+        if (TouchInput.instance.IsTouched())
         {
             Vector2 pos = TouchInput.instance.GetTouchScreen();
             velocity = previousTouchPos.x - pos.x;
