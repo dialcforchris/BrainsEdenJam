@@ -89,4 +89,10 @@ public class TouchInput : MonoBehaviour
         }
         return speed;
     }
+
+    public float SetVelocity()
+    {
+
+        return  Mathf.Clamp01(Mathf.Clamp((TouchInput.instance.GetSwipeSpeed() / 100), 0, 100));
+    }
 }
