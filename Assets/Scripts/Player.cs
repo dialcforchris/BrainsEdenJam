@@ -60,24 +60,30 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
         if (Vector3.Distance(Vector3.zero, transform.position) > 25)
             transform.position = Vector3.zero;
+    }
 
+    void FixedUpdate()
+    {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Translate(Vector3.left * moveSpeed);
+            transform.position = new Vector3(transform.position.x - (moveSpeed * Time.deltaTime), transform.position.y, 0.0f);
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x - moveSpeed * Time.deltaTime, transform.position.y));
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Translate(Vector3.right * moveSpeed);
+            transform.position = new Vector3(transform.position.x + (moveSpeed * Time.deltaTime), transform.position.y, 0.0f);
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x + moveSpeed * Time.deltaTime, transform.position.y));
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            transform.Translate(Vector3.up * moveSpeed);
+            transform.position = new Vector3(transform.position.x, transform.position.y + (moveSpeed * Time.deltaTime), 0.0f);
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x , transform.position.y + moveSpeed * Time.deltaTime));
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            transform.Translate(Vector3.down * moveSpeed);
+            transform.position = new Vector3(transform.position.x, transform.position.y - (moveSpeed * Time.deltaTime), 0.0f);
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x, transform.position.y - moveSpeed * Time.deltaTime));
         }
-
     }
 
     private void SwitchWorld(bool _world)
