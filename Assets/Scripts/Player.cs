@@ -6,12 +6,14 @@ public class Player : MonoBehaviour
 {
     private bool inGreyWorld = true;
 
+    public Transform StartPoint;
     public Vector2 startPos;
     float speed = 6;
     ParticleSystem ps;
 
     private void Awake()
     {
+        
         ps = GetComponent<ParticleSystem>();
         //transform.position = startPos;
         Physics2D.IgnoreLayerCollision(8, 10, true);

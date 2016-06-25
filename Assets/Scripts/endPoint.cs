@@ -19,7 +19,7 @@ public class endPoint : MonoBehaviour {
         }
     }
 
-    bool attractPlayer;
+    bool attractPlayer,levelFinished;
     GameObject thing;
     // Update is called once per frame
     void Update()
@@ -34,10 +34,11 @@ public class endPoint : MonoBehaviour {
             else
                 sr.color = Color.white;
         }
-        if (thing)
+        if (thing && !levelFinished)
         {
             if (Vector3.Distance(thing.transform.position, transform.position) < .2f)
             {
+                levelFinished = true;
                 StartCoroutine(screenTransition.instance.screenTransitioner(false,levelIndextoLoad));
             }
         }

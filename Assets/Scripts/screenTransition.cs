@@ -33,7 +33,6 @@ public class screenTransition : MonoBehaviour {
 
         float lerpy = 1;
         
-
         if (!inOut)
         {
             while (lerpy > 0)
@@ -61,6 +60,8 @@ public class screenTransition : MonoBehaviour {
 
     void Update()
     {
+        val = Input.mousePosition.x / Screen.width;
+
         if (TouchInput.instance.IsTouched())
         {
             Vector2 pos = TouchInput.instance.GetTouchScreen();
