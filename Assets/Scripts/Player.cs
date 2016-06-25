@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour 
 {
+    public AudioClip clip;
     private static Player player = null;
     public static Player instance { get { return player; } }
 
@@ -15,9 +16,10 @@ public class Player : MonoBehaviour
     public GameObject deathParticles_colour, deathParticles_grey, birthParticles_grey, birthParticles_colour;
 
     [SerializeField] private Rigidbody2D rigidBody = null;
-    [SerializeField]
-    private Transform frontPivot = null;
-
+      float AccelerometerUpdateInterval =  200;
+float LowPassWidthInSeconds = 1f;
+    [SerializeField] private Transform frontPivot = null;
+    float LowPassFilterFactor;
     [SerializeField]
     private ParticleSystem colourTrail, greyTrail;
 
@@ -27,8 +29,11 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer greyRenderer = null;
     [SerializeField] private SpriteRenderer colourRenderer = null;
 
+    private bool changingWorld = false;
+
     private void Awake()
     {
+        LowPassFilterFactor = AccelerometerUpdateInterval / LowPassWidthInSeconds; 
         tempMoveSpeed = moveSpeed;
         tempSpeed = speed;
         player = this;
@@ -40,6 +45,7 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate () 
     {
+        changingWorld = false;
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Die());
 
@@ -108,6 +114,7 @@ public class Player : MonoBehaviour
     {
         if (inGreyWorld != _world)
         {
+            changingWorld = true;
             inGreyWorld = _world;
             Physics2D.IgnoreLayerCollision(8, 10, inGreyWorld);
             Physics2D.IgnoreLayerCollision(9, 10, !inGreyWorld);
@@ -122,6 +129,7 @@ public class Player : MonoBehaviour
         if (playerState != PlayerStates.DEAD)
         {
             state = PlayerStates.DEAD;
+            GetComponent<AudioSource>().PlayOneShot(clip);
             greyRenderer.enabled = false;
             colourRenderer.enabled = false;
             colourTrail.Stop();
@@ -163,7 +171,10 @@ public class Player : MonoBehaviour
     {
         if (_col.tag == "KillArea")
         {
-            StartCoroutine("Die");
+            if (changingWorld)
+            {
+                StartCoroutine("Die");
+            }
         }
     }
 
