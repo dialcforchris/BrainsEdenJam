@@ -109,6 +109,7 @@ public class Player : MonoBehaviour
     public IEnumerator Die()
     {
         //do a death and....
+        
         float tempMoveSpeed = moveSpeed;
         float tempSpeed = speed;
         GetComponent<SpriteRenderer>().enabled = false;
@@ -136,7 +137,8 @@ public class Player : MonoBehaviour
     {
         if (_col.tag == "KillArea")
         {
-            Die();
+            Debug.Log("kill ");
+            StartCoroutine("Die");
         }
     }
 
