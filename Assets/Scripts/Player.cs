@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
     {
         if (inGreyWorld != _world)
         {
-            ps.startColor = _world ? Color.black : Color.white;
+            ps.startColor = !_world ? Color.black : Color.white;
             inGreyWorld = _world;
             Physics2D.IgnoreLayerCollision(8, 10, inGreyWorld);
             Physics2D.IgnoreLayerCollision(9, 10, !inGreyWorld);
