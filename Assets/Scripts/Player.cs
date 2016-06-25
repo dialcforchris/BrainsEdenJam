@@ -7,11 +7,12 @@ public class Player : MonoBehaviour
     private bool inGreyWorld = true;
 
     public Transform StartPoint;
-    float speed = 6;
+    float speed = 1;
     public float moveSpeed;
     public GameObject deathParticles,birthParticles;
     ParticleSystem ps;
 
+    [SerializeField] private Rigidbody2D rigidBody = null;
     [SerializeField]
     private Transform frontPivot = null;
 
@@ -24,7 +25,7 @@ public class Player : MonoBehaviour
     }
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
     {
         Movement();
         if (TouchInput.instance.IsTouched())
@@ -61,38 +62,29 @@ public class Player : MonoBehaviour
         {
             accInput.Normalize();
         }
-        transform.position += accInput * Time.deltaTime * speed;
-        transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
+        rigidBody.AddForce(accInput * Time.deltaTime * speed);
+        
         transform.rotation = Quaternion.LookRotation(Vector3.forward, accInput);
-        if (Vector3.Distance(Vector3.zero, transform.position) > 25)
-            transform.position = Vector3.zero;
-    }
 
-    void FixedUpdate()
-    {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.position = new Vector3(transform.position.x - (moveSpeed * Time.deltaTime), transform.position.y, 0.0f);
+            rigidBody.AddForce(new Vector2(moveSpeed * -Time.deltaTime, 0.0f));
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.left);
-            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x - moveSpeed * Time.deltaTime, transform.position.y));
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.position = new Vector3(transform.position.x + (moveSpeed * Time.deltaTime), transform.position.y, 0.0f);
+            rigidBody.AddForce(new Vector2(moveSpeed * Time.deltaTime, 0.0f));
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
-            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x + moveSpeed * Time.deltaTime, transform.position.y));
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + (moveSpeed * Time.deltaTime), 0.0f);
+            rigidBody.AddForce(new Vector2(0.0f, moveSpeed * Time.deltaTime));
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x , transform.position.y + moveSpeed * Time.deltaTime));
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y - (moveSpeed * Time.deltaTime), 0.0f);
+            rigidBody.AddForce(new Vector2(0.0f, moveSpeed * -Time.deltaTime));
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.down);
-            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x, transform.position.y - moveSpeed * Time.deltaTime));
         }
     }
 
