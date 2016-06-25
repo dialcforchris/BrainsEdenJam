@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+            StartCoroutine(Die());
+
         Movement();
         if (TouchInput.instance.IsTouched())
         {
@@ -109,22 +112,28 @@ public class Player : MonoBehaviour
 
     public IEnumerator Die()
     {
-        //do a death and....
-        
         float tempMoveSpeed = moveSpeed;
         float tempSpeed = speed;
         GetComponent<SpriteRenderer>().enabled = false;
         ps.Stop();
         moveSpeed = 0;
         speed = 0;
-        GameObject dp= Instantiate(deathParticles,transform.position,transform.rotation) as GameObject;
-        screenTransition.instance.Shake(0.75f);
+        GameObject dp = Instantiate(deathParticles, transform.position, transform.rotation) as GameObject;
+        GameObject dp2 = Instantiate(dp) as GameObject;
+        dp.layer = 8;
+        dp2.layer = 9;
+        dp2.GetComponent<ParticleSystem>().startColor = Color.white;
+        StartCoroutine(screenTransition.instance.Shake(.25f));
         yield return new WaitForSeconds(2);
         Destroy(dp);
 
-
         transform.position = StartPoint.position;
         GameObject bp = Instantiate(birthParticles, transform.position, transform.rotation) as GameObject;
+        bp.layer = 8;
+        GameObject bp2 = Instantiate(birthParticles, transform.position, transform.rotation) as GameObject;
+        bp2.layer = 9;
+        bp2.GetComponent<ParticleSystem>().startColor = Color.white;
+
         yield return new WaitForSeconds(.75f);
         moveSpeed = tempMoveSpeed;
         speed = tempSpeed;
@@ -133,6 +142,7 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(.25f);
         Destroy(bp);
+        Destroy(bp2);
     }
     public enum PlayerStates
     {
