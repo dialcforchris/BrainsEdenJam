@@ -58,6 +58,17 @@ public class screenTransition : MonoBehaviour {
         }
     }
 
+    public IEnumerator Shake(float duration)
+    {
+        float timer = 0;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            transform.position = new Vector2(Mathf.Sin(Random.value), Mathf.Sin(Random.value));
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     void Update()
     {
         val = Input.mousePosition.x / Screen.width;

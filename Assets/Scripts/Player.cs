@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
 
     public Transform StartPoint;
     float speed = 6;
+    public float moveSpeed;
+    public ParticleSystem deathParticles;
     ParticleSystem ps;
 
     private void Awake()
@@ -46,8 +48,6 @@ public class Player : MonoBehaviour
             SwitchWorld(true);
         }
     }
-
-    public float moveSpeed;
 
     void Movement()
     {
@@ -99,9 +99,24 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Die()
+    public IEnumerator Die()
     {
         //do a death and....
+        float tempMoveSpeed = moveSpeed;
+        float tempSpeed = speed;
+        GetComponent<SpriteRenderer>().enabled = false;
+        ps.Stop();
+        moveSpeed = 0;
+        speed = 0;
+        deathParticles.Play();
+        screenTransition.instance.Shake(0.75f);
+        yield return new WaitForSeconds(2);
+
+
+        moveSpeed = tempMoveSpeed;
+        speed = tempSpeed;
+        ps.Play();
+        GetComponent<SpriteRenderer>().enabled = true;
         transform.position = StartPoint.position;
     }
     public enum PlayerStates

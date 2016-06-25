@@ -6,7 +6,7 @@ public class LevelTrigger : MonoBehaviour
     {
         if (_col.tag == "Player")
         {
-            _col.GetComponent<Player>().Die();
+            StartCoroutine(_col.GetComponent<Player>().Die());
         }
     }
 }
