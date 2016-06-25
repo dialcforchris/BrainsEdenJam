@@ -37,7 +37,7 @@ public class TouchInput : MonoBehaviour
         {
             Touch _touch = Input.GetTouch(0);
             touches = _touch.position;
-            Vector3 vec = new Vector3(touches.x, touches.y, 10);  
+            Vector3 vec = new Vector3(touches.x, touches.y, -10);  
             touches = cam.ScreenToViewportPoint(vec);
             return touches;
         }
@@ -48,7 +48,7 @@ public class TouchInput : MonoBehaviour
     {
         Vector2 worldPos = Vector2.zero;
         worldPos = GetTouchScreen();
-        Vector3 vec = new Vector3(worldPos.x, worldPos.y, 10);
+        Vector3 vec = new Vector3(worldPos.x, worldPos.y, -10);
         worldPos = cam.ViewportToWorldPoint(vec);
         return worldPos;
     }
