@@ -17,7 +17,7 @@ public class screenTransition : MonoBehaviour {
     public SpriteRenderer transitionSprite;
 
     public float multi,offZet,velocity;
-    bool LastDir; //False can be left, true for right
+    bool currentSide = true; //False can be left, true for right
 
     Vector2 previousTouchPos;
     void Awake()
@@ -71,37 +71,78 @@ public class screenTransition : MonoBehaviour {
 
     void Update()
     {
-        val = Input.mousePosition.x / Screen.width;
-
+        
+        bool touchTarget  =  TouchInput.instance.GetTouchScreen().x<0.5 ? true : false;
+        //bool target = Input.mousePosition.x / Screen.width < 0.5f ? true : false;
+       ////val = Input.mousePosition.x / Screen.width;
+       // val += target ? Time.deltaTime  : -Time.deltaTime ;
         if (TouchInput.instance.IsTouched())
         {
-            Vector2 pos = TouchInput.instance.GetTouchScreen();
-            velocity = previousTouchPos.x - pos.x;
-            val = pos.x;
-            previousTouchPos = TouchInput.instance.GetTouchScreen();
-        }
-        else if (velocity ==0)
+          if (currentSide)
+          {
+            //velocity = previousTouchPos.x - pos.x;
+            //val = pos.x;
+              
+          
+                val += touchTarget ? Time.deltaTime : -Time.deltaTime;
+              if (val>=1)
+              {
+                  currentSide=false;
+                  val = 1;
+              }
+          }
+          else
+          {
+              val += touchTarget ? +Time.deltaTime : -Time.deltaTime;
+              if (val<=0)
+              {
+                  currentSide = true;
+                  val = 0;
+              }
+          }
+            //
+               // previousTouchPos = TouchInput.instance.GetTouchScreen();
+         
+          
+         }
+        else 
         {
-            /*if (val > 0 && !LastDir)//Snap left
-            {
-                val = Mathf.Lerp(val, 0, Time.deltaTime * TouchInput.instance.GetSwipeSpeed());
-                val = (val < 0) ? 0 : val;
-            }
-            else if (val < 1 && LastDir)//Snap right
-            {
-                val = Mathf.Lerp(val, 1, Time.deltaTime * TouchInput.instance.GetSwipeSpeed());
-                val = (val > 1) ? 1 : val;
-            }*/
+           if (currentSide)
+           {
+               val -= Time.deltaTime;
 
-            if (val > 0.85f)
-                LastDir = true;
-            else if (val < 0.15f)
-                LastDir = false;
+           }
+           else if (!currentSide)
+           {
+               val += Time.deltaTime;
+
+           }
+           
         }
-        else
-        {
-            val += velocity;
-        }
+
+        //else if (velocity ==0)
+        //{
+        //    /*if (val > 0 && !LastDir)//Snap left
+        //    {
+        //        val = Mathf.Lerp(val, 0, Time.deltaTime * TouchInput.instance.GetSwipeSpeed());
+        //        val = (val < 0) ? 0 : val;
+        //    }
+        //    else if (val < 1 && LastDir)//Snap right
+        //    {
+        //        val = Mathf.Lerp(val, 1, Time.deltaTime * TouchInput.instance.GetSwipeSpeed());
+        //        val = (val > 1) ? 1 : val;
+        //    }*/
+
+        //    if (val > 0.85f)
+        //        LastDir = true;
+        //    else if (val < 0.15f)
+        //        LastDir = false;
+        //}
+        //else
+        //{
+        //    val += velocity;
+        //}
+        val = Mathf.Clamp01(val);
 
         if (val != previousVal)
             moveScreenSlider();
