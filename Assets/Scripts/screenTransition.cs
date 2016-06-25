@@ -3,6 +3,8 @@ using System.Collections;
 
 public class screenTransition : MonoBehaviour {
 
+    public static screenTransition instance;
+
     [Range (0,1)]
     public float val;
     float previousVal;
@@ -14,6 +16,11 @@ public class screenTransition : MonoBehaviour {
     bool LastDir; //False can be left, true for right
 
     Vector2 previousTouchPos;
+    void Awake()
+    {
+        moveScreenSlider();
+        instance = this;
+    }
 
 	void Update ()
     {
@@ -26,7 +33,7 @@ public class screenTransition : MonoBehaviour {
         }
         else if (velocity ==0)
         {
-            if (val > 0 && !LastDir)//Snap left
+            /*if (val > 0 && !LastDir)//Snap left
             {
                 val = Mathf.Lerp(val, 0, Time.deltaTime * 3);
                 val = (val < 0) ? 0 : val;
@@ -35,7 +42,7 @@ public class screenTransition : MonoBehaviour {
             {
                 val = Mathf.Lerp(val, 1, Time.deltaTime * 3);
                 val = (val > 1) ? 1 : val;
-            }
+            }*/
 
             if (val > 0.85f)
                 LastDir = true;
