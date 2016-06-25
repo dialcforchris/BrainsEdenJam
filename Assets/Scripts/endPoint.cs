@@ -5,6 +5,8 @@ public class endPoint : MonoBehaviour {
 
     SpriteRenderer sr;
     public int levelIndextoLoad;
+    [SerializeField]
+    private int maxLevels = 2;
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -40,6 +42,8 @@ public class endPoint : MonoBehaviour {
             {
                 levelFinished = true;
                 StartCoroutine(screenTransition.instance.screenTransitioner(false,levelIndextoLoad));
+                if (levelIndextoLoad<maxLevels)
+                levelIndextoLoad++;
             }
         }
     }
