@@ -28,12 +28,12 @@ public class screenTransition : MonoBehaviour {
         {
             if (val > 0 && !LastDir)//Snap left
             {
-                val = Mathf.Lerp(val, 0, Time.deltaTime * 3);
+                val = Mathf.Lerp(val, 0, Time.deltaTime * TouchInput.instance.GetSwipeSpeed());
                 val = (val < 0) ? 0 : val;
             }
             else if (val < 1 && LastDir)//Snap right
             {
-                val = Mathf.Lerp(val, 1, Time.deltaTime * 3);
+                val = Mathf.Lerp(val, 1, Time.deltaTime * TouchInput.instance.GetSwipeSpeed());
                 val = (val > 1) ? 1 : val;
             }
 
@@ -54,12 +54,12 @@ public class screenTransition : MonoBehaviour {
     void moveScreenSlider()
     {
         camA.transform.position = new Vector3(camA.orthographicSize * val * multi, 0, offZet);
-        var a = camA.rect;
+        Rect a = camA.rect;
         a.xMin = val;
         camA.rect = a;
 
         camB.transform.position = new Vector3(camA.orthographicSize * (1 - val) * multi * -1, 0, offZet);
-        var CamBRect = camB.rect;
+        Rect CamBRect = camB.rect;
         CamBRect.xMax = val;
         camB.rect = CamBRect;
 

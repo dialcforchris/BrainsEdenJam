@@ -13,7 +13,7 @@ public class TouchInput : MonoBehaviour
     private int height = 0;
     private int width = 0;
     [SerializeField] private Camera cam;
-
+    float speed;
 
     void Awake () 
     {
@@ -26,20 +26,16 @@ public class TouchInput : MonoBehaviour
        
 	}
 	
+    void Update()
+    {
+        SpeedDrag();
+    }
     public Vector2 GetTouchScreen()
     {
         Vector2 touches = Vector2.zero;
         if (Input.touchCount>0)
         {
             Touch _touch = Input.GetTouch(0);
-            if (_touch.phase == TouchPhase.Moved)
-            {
-                swipe = true;
-            }
-            else
-            {
-                swipe = false;
-            }
             touches = _touch.position;
             Vector3 vec = new Vector3(touches.x, touches.y, 10);  
             touches = cam.ScreenToViewportPoint(vec);
@@ -60,5 +56,37 @@ public class TouchInput : MonoBehaviour
     public bool IsTouched()
     {
         return Input.touchCount > 0;
+    }
+
+    public float GetSwipeSpeed()
+    {
+        Vector2 touchVel = Vector2.zero;
+        if (Input.touchCount>0&&Input.GetTouch(0).phase == TouchPhase.Moved)
+        {
+          touchVel = Input.GetTouch(0).deltaPosition;
+          speed = Input.GetTouch(0).deltaTime;
+            speed = (touchVel.magnitude / speed)/100;
+        }
+       
+        return speed;
+    }
+    public float SpeedDrag()
+    {
+        if (Input.touches.Length==0)
+        {
+            if (speed > 0)
+            {
+                speed -= Time.deltaTime*100;
+            }
+            else
+            {
+                speed = 0;
+            }
+        }
+        else if (Input.GetTouch(0).phase == TouchPhase.Stationary)
+        {
+            speed = 0;
+        }
+        return speed;
     }
 }
