@@ -12,11 +12,14 @@ public class Player : MonoBehaviour
     public Transform StartPoint;
     float speed = 1;
     public float moveSpeed;
-    public GameObject deathParticles,birthParticles;
-    ParticleSystem ps;
+    public GameObject deathParticles_colour, deathParticles_grey, birthParticles_grey, birthParticles_colour;
 
     [SerializeField] private Rigidbody2D rigidBody = null;
-    [SerializeField] private Transform frontPivot = null;
+    [SerializeField]
+    private Transform frontPivot = null;
+
+    [SerializeField]
+    private ParticleSystem colourTrail, greyTrail;
 
     private PlayerStates state = PlayerStates.ACTIVE;
     public PlayerStates playerState { get { return state; } }
@@ -28,7 +31,6 @@ public class Player : MonoBehaviour
     {
         player = this;
         transform.position = StartPoint.position;
-        ps = GetComponent<ParticleSystem>();
         //transform.position = startPos;
         Physics2D.IgnoreLayerCollision(8, 10, true);
     }
@@ -104,7 +106,6 @@ public class Player : MonoBehaviour
     {
         if (inGreyWorld != _world)
         {
-            ps.startColor = !_world ? Color.black : Color.white;
             inGreyWorld = _world;
             Physics2D.IgnoreLayerCollision(8, 10, inGreyWorld);
             Physics2D.IgnoreLayerCollision(9, 10, !inGreyWorld);
@@ -118,29 +119,26 @@ public class Player : MonoBehaviour
         float tempSpeed = speed;
         greyRenderer.enabled = false;
         colourRenderer.enabled = false;
-        ps.Stop();
+        colourTrail.Stop();
+        greyTrail.Stop();
         moveSpeed = 0;
         speed = 0;
-        GameObject dp = Instantiate(deathParticles, transform.position, transform.rotation) as GameObject;
-        GameObject dp2 = Instantiate(dp) as GameObject;
-        dp.layer = 8;
-        dp2.layer = 9;
-        dp2.GetComponent<ParticleSystem>().startColor = Color.black;
+        GameObject dp = Instantiate(deathParticles_colour, transform.position, transform.rotation) as GameObject;
+        GameObject dp2 = Instantiate(deathParticles_grey, transform.position, transform.rotation) as GameObject;
         StartCoroutine(screenTransition.instance.Shake(.25f));
         yield return new WaitForSeconds(2);
         Destroy(dp);
+        Destroy(dp2);
 
         transform.position = StartPoint.position;
-        GameObject bp = Instantiate(birthParticles, transform.position, transform.rotation) as GameObject;
-        bp.layer = 8;
-        GameObject bp2 = Instantiate(birthParticles, transform.position, transform.rotation) as GameObject;
-        bp2.layer = 9;
-        bp2.GetComponent<ParticleSystem>().startColor = Color.white;
+        GameObject bp = Instantiate(birthParticles_colour, transform.position, transform.rotation) as GameObject;
+        GameObject bp2 = Instantiate(birthParticles_grey, transform.position, transform.rotation) as GameObject;
 
         yield return new WaitForSeconds(.75f);
         moveSpeed = tempMoveSpeed;
         speed = tempSpeed;
-        ps.Play();
+        colourTrail.Play();
+        greyTrail.Play();
         greyRenderer.enabled = true;
         colourRenderer.enabled = true;
 
