@@ -13,7 +13,7 @@ public class test : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        text.text = "hopefully 0-1 " + TouchInput.instance.GetTouchScreen().ToString();
-        text2.text = "hopefully World " + TouchInput.instance.GetTouchWorldPos().ToString();
+        text.text = "speed drag " + TouchInput.instance.SpeedDrag();
+        text2.text = "swipe speed " + Mathf.Clamp01(Mathf.Clamp((TouchInput.instance.GetSwipeSpeed()/100),0,100)).ToString();
 	}
 }

@@ -8,9 +8,12 @@ public class Player : MonoBehaviour
 
     public Vector2 startPos;
     float speed = 6;
+    ParticleSystem ps;
+
     private void Awake()
     {
-        transform.position = startPos;
+        ps = GetComponent<ParticleSystem>();
+        //transform.position = startPos;
         Physics2D.IgnoreLayerCollision(8, 10, true);
     }
 	
@@ -35,12 +38,10 @@ public class Player : MonoBehaviour
         //If the world thing should be transitioning do this
         if (transform.position.x < Camera.main.ViewportToWorldPoint(new Vector3(screenTransition.instance.val, 0.5f, 10)).x)
         {
-            Debug.Log("l");
             SwitchWorld(false);
         }
         else
         {
-            Debug.Log("r");
             SwitchWorld(true);
         }
     }
@@ -88,14 +89,15 @@ public class Player : MonoBehaviour
 
     private void SwitchWorld(bool _world)
     {
-        if(inGreyWorld != _world)
+        if (inGreyWorld != _world)
         {
+            ps.startColor = _world ? Color.black : Color.white;
             inGreyWorld = _world;
             Physics2D.IgnoreLayerCollision(8, 10, inGreyWorld);
             Physics2D.IgnoreLayerCollision(9, 10, !inGreyWorld);
         }
     }
-   
+
     public void Die()
     {
         //do a death and....
