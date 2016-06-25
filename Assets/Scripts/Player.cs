@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     float speed = 6;
     private void Awake()
     {
+        transform.position = startPos;
         Physics2D.IgnoreLayerCollision(8, 10, true);
     }
 	
@@ -17,9 +18,10 @@ public class Player : MonoBehaviour
 	void Update () 
     {
         Movement();
-        if(TouchInput.instance.IsTouched())
+        if (TouchInput.instance.IsTouched())
         {
             Vector2 _v = TouchInput.instance.GetTouchWorldPos();
+
             if (transform.position.x < _v.x)
             {
                 SwitchWorld(false);
@@ -29,7 +31,21 @@ public class Player : MonoBehaviour
                 SwitchWorld(true);
             }
         }
-	}
+
+        //If the world thing should be transitioning do this
+        if (transform.position.x < Camera.main.ViewportToWorldPoint(new Vector3(screenTransition.instance.val, 0.5f, 10)).x)
+        {
+            Debug.Log("l");
+            SwitchWorld(false);
+        }
+        else
+        {
+            Debug.Log("r");
+            SwitchWorld(true);
+        }
+    }
+
+    public float moveSpeed;
 
     void Movement()
     {
@@ -44,7 +60,24 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
         if (Vector3.Distance(Vector3.zero, transform.position) > 25)
             transform.position = Vector3.zero;
-        
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.Translate(Vector3.left * moveSpeed);
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.Translate(Vector3.right * moveSpeed);
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            transform.Translate(Vector3.up * moveSpeed);
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            transform.Translate(Vector3.down * moveSpeed);
+        }
+
     }
 
     private void SwitchWorld(bool _world)
