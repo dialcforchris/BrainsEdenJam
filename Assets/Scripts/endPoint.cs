@@ -5,8 +5,6 @@ public class endPoint : MonoBehaviour {
 
     SpriteRenderer sr;
     public int levelIndextoLoad;
-    [SerializeField]
-    private int maxLevels = 2;
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -38,12 +36,18 @@ public class endPoint : MonoBehaviour {
         }
         if (thing && !levelFinished)
         {
-            if (Vector3.Distance(thing.transform.position, transform.position) < .2f)
+            if (thing.GetComponent<SpriteRenderer>().enabled)
             {
-                levelFinished = true;
-                StartCoroutine(screenTransition.instance.screenTransitioner(false,levelIndextoLoad));
-                if (levelIndextoLoad<maxLevels)
-                levelIndextoLoad++;
+                if (Vector3.Distance(thing.transform.position, transform.position) < .2f)
+                {
+                    levelFinished = true;
+                    StartCoroutine(screenTransition.instance.screenTransitioner(false, levelIndextoLoad));
+                }
+            }
+            else
+            {
+                attractPlayer = false;
+                thing = null;
             }
         }
     }
