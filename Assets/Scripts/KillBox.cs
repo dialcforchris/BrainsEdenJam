@@ -6,8 +6,12 @@ public class KillBox : MonoBehaviour
     {
         if (_col.tag == "Player")
         {
+           
             if (_col.GetComponent<Player>().playerState != Player.PlayerStates.DEAD)
-            StartCoroutine(_col.GetComponent<Player>().Die());
+            {
+
+                StartCoroutine(_col.GetComponent<Player>().Die());
+            }
         }
     }
 }
