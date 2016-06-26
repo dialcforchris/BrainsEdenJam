@@ -9,10 +9,9 @@ public class adas : MonoBehaviour {
         {
             for (int j = 0; j < transform.GetChild(i).transform.childCount; ++j)
             {
-                if(transform.GetChild(i).transform.GetChild(j).transform.GetChild(0).GetComponent<Rigidbody2D>())
-                {
-                    Destroy(transform.GetChild(i).transform.GetChild(j).transform.GetChild(0).GetComponent<Rigidbody2D>());
-                }
+
+                    Destroy(transform.GetChild(i).transform.GetChild(j).transform.GetChild(0).gameObject);
+                
             }
         }
 	}
