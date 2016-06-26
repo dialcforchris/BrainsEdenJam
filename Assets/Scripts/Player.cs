@@ -38,6 +38,7 @@ float LowPassWidthInSeconds = 1f;
         transform.position = StartPoint.position;
         //transform.position = startPos;
         Physics2D.IgnoreLayerCollision(8, 10, true);
+        Physics2D.IgnoreLayerCollision(9, 10, false);
     }
 	
 	// Update is called once per frame
