@@ -25,8 +25,14 @@ public class BGM : MonoBehaviour
 	// Use this for initialization
 	void Awake () 
     {
-        if (bgm = null)
-        bgm = this;
+        if (bgm != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            bgm = this; 
+        }
         DontDestroyOnLoad(this);
        
         playLight.clip = light;
