@@ -82,7 +82,11 @@ public class screenTransition : MonoBehaviour {
         transform.position = Vector3.zero;
     }
 
-    void Update()
+    /// <summary>
+    ///     //change to caps for android build
+    /// </summary>
+
+    void update()
     {
         bool touchTarget  =  TouchInput.instance.GetTouchScreen().x<0.5 ? true : false;
         //bool target = Input.mousePosition.x / Screen.width < 0.5f ? true : false;
@@ -161,7 +165,7 @@ public class screenTransition : MonoBehaviour {
             moveScreenSlider();
     }
 
-    void update()
+    void Update()
     {
         moveScreenSlider();
  val = Input.mousePosition.x / Screen.width;
