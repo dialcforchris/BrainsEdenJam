@@ -80,7 +80,7 @@ public class screenTransition : MonoBehaviour {
         transform.position = Vector3.zero;
     }
 
-    void update()
+    void Update()
     {
         bool touchTarget  =  TouchInput.instance.GetTouchScreen().x<0.5 ? true : false;
         //bool target = Input.mousePosition.x / Screen.width < 0.5f ? true : false;
@@ -159,7 +159,7 @@ public class screenTransition : MonoBehaviour {
             moveScreenSlider();
     }
 
-    void Update()
+    void update()
     {
         moveScreenSlider();
  val = Input.mousePosition.x / Screen.width;

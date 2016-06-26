@@ -123,7 +123,10 @@ float LowPassWidthInSeconds = 1f;
 
     float tempMoveSpeed;
     float tempSpeed;
-
+    void Died()
+    {
+        StartCoroutine("Die");
+    }
     public IEnumerator Die()
     {
         if (playerState != PlayerStates.DEAD)
@@ -171,17 +174,20 @@ float LowPassWidthInSeconds = 1f;
 
     void OnTriggerEnter2D(Collider2D _col)
     {
-        
-        if (_col.tag == "KillArea")
+        if (state != PlayerStates.DEAD)
         {
-            if (changingWorld)
+
+            if (_col.tag == "KillArea")
             {
-                StartCoroutine("Die");
+                if (changingWorld)
+                {
+                    Died();
+                }
             }
-        }
-        else if (_col.tag == "DeathArea")
-        {
-             StartCoroutine("Die");
+            else if (_col.tag == "DeathArea")
+            {
+                Died();
+            }
         }
     }
 
