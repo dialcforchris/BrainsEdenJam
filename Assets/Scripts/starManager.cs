@@ -25,12 +25,14 @@ public class starManager : MonoBehaviour {
 
     void SaveToFile()
     {
-        if (!File.Exists(Application.dataPath + "/" + "sters.txt"))
+        if (!File.Exists(Application.persistentDataPath + "/" + "sters.txt"))
         {
-            StreamWriter newFile = new StreamWriter(Application.dataPath + "/" + "sters.txt", false);
+            //StreamWriter newFile = new StreamWriter(Application.persistentDataPath + "/" + "sters.txt", false);
+            StreamWriter newFile = File.CreateText(Application.persistentDataPath + "/" + "sters.txt");
+
             newFile.Close();
         }
-        StreamReader sr = new StreamReader(Application.dataPath + "/" + "sters.txt");
+        StreamReader sr = new StreamReader(Application.persistentDataPath + "/" + "sters.txt");
         s = sr.ReadToEnd();
         if (s.IndexOf("Level " + Application.loadedLevel) != -1)
         {
@@ -38,7 +40,7 @@ public class starManager : MonoBehaviour {
         }
         sr.Close();
 
-        StreamWriter sw = new StreamWriter(Application.dataPath + "/" + "sters.txt", false);
+        StreamWriter sw = new StreamWriter(Application.persistentDataPath + "/" + "sters.txt", false);
         s += "Level " + Application.loadedLevel + " " + starsCollected + '\n';
         sw.Write(s);
         sw.Close();
