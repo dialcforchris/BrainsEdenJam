@@ -17,6 +17,7 @@ public class endPoint : MonoBehaviour {
         if (col.tag == "Player")
         {
             attractPlayer = true;
+
             thing = col.gameObject;
         }
     }
@@ -42,8 +43,9 @@ public class endPoint : MonoBehaviour {
             {
                 if (Vector3.Distance(thing.transform.position, transform.position) < .2f)
                 {
-                    levelFinished = true;
                     source.PlayOneShot(clip);
+
+                    levelFinished = true;
                     StartCoroutine(screenTransition.instance.screenTransitioner(false, levelIndextoLoad));
                 }
             }
