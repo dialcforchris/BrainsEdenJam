@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class screenTransition : MonoBehaviour {
 
@@ -60,7 +61,8 @@ public class screenTransition : MonoBehaviour {
             //{
             //    DontDestroyOnLoad(BGM.instance);
             //}
-            Application.LoadLevel(level);
+            SceneManager.LoadScene(level);
+           // Application.LoadLevel(level);
         }
     }
 

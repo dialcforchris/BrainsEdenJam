@@ -52,7 +52,6 @@ public class endPoint : MonoBehaviour {
                 if (Vector3.Distance(thing.transform.position, transform.position) < .2f)
                 {
                     source.PlayOneShot(clip);
-
                     levelFinished = true;
                     StartCoroutine(screenTransition.instance.screenTransitioner(false, levelIndextoLoad));
                 }
