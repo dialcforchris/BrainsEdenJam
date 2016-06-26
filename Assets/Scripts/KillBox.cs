@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class LevelTrigger : MonoBehaviour
+public class KillBox : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D _col)
     {

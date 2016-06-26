@@ -7,6 +7,8 @@ public class star : MonoBehaviour {
 
     public Animator anim;
     public ParticleSystem starPoof;
+    public AudioClip pickupSound;
+    public AudioSource source;
 
     void OnTriggerEnter2D()
     {
@@ -14,6 +16,7 @@ public class star : MonoBehaviour {
         {
             Invoke("thing", 0.5f);
             anim.SetBool("collected", true);
+            source.PlayOneShot(pickupSound);
             collected = true;
             starManager.instance.starCollection();
         }
