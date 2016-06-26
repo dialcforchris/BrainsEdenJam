@@ -9,7 +9,7 @@ public class starManager : MonoBehaviour {
     public Image[] UIStars;
     public Sprite FillledStar;
     public static starManager instance;
-    public string s;
+    string s;
 
     void Start()
     {
