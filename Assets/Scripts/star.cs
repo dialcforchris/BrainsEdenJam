@@ -10,20 +10,24 @@ public class star : MonoBehaviour {
     public AudioClip pickupSound;
     public AudioSource source;
 
-    void OnTriggerEnter2D()
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if (!collected)
+        if (col.tag == "Player")
         {
-            Invoke("thing", 0.5f);
-            anim.SetBool("collected", true);
-            source.PlayOneShot(pickupSound);
-            collected = true;
-            starManager.instance.starCollection();
+            if (!collected)
+            {
+                Invoke("thing", 0.5f);
+                anim.SetBool("collected", true);
+                source.PlayOneShot(pickupSound);
+                collected = true;
+                starManager.instance.starCollection();
+            }
         }
     }
+
     void thing()
     {
-            starPoof.Play();
+        starPoof.Play();
     }
 
     // Use this for initialization
