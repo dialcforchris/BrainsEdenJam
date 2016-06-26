@@ -5,7 +5,8 @@ public class endPoint : MonoBehaviour {
 
     SpriteRenderer sr;
     public int levelIndextoLoad;
-
+    public AudioClip clip;
+    public AudioSource source;
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -16,6 +17,7 @@ public class endPoint : MonoBehaviour {
         if (col.tag == "Player")
         {
             attractPlayer = true;
+
             thing = col.gameObject;
         }
     }
@@ -41,8 +43,9 @@ public class endPoint : MonoBehaviour {
             {
                 if (Vector3.Distance(thing.transform.position, transform.position) < .2f)
                 {
+                    source.PlayOneShot(clip);
+
                     levelFinished = true;
-                    
                     StartCoroutine(screenTransition.instance.screenTransitioner(false, levelIndextoLoad));
                 }
             }
