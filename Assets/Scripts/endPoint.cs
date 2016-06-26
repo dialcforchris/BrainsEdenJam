@@ -21,6 +21,14 @@ public class endPoint : MonoBehaviour {
             thing = col.gameObject;
         }
     }
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.tag == "Player")
+        {
+            attractPlayer = false;
+            thing = null;
+        }
+    }
 
     bool attractPlayer,levelFinished;
     GameObject thing;
@@ -29,7 +37,7 @@ public class endPoint : MonoBehaviour {
     {
         if (attractPlayer)
         {
-            thing.transform.position = Vector3.Lerp(thing.transform.position, transform.position, Time.deltaTime * 2.5f);
+            thing.transform.position = Vector3.Lerp(thing.transform.position, transform.position, Time.deltaTime * 10);
             if (Vector3.Distance(thing.transform.position, transform.position) < 1)
             {
                 sr.color = Color.red;

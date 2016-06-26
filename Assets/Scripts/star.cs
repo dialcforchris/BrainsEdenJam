@@ -16,6 +16,7 @@ public class star : MonoBehaviour {
         {
             Invoke("thing", 0.5f);
             anim.SetBool("collected", true);
+            source.PlayOneShot(pickupSound);
             collected = true;
             starManager.instance.starCollection();
         }
