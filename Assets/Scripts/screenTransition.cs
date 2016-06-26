@@ -12,7 +12,7 @@ public class screenTransition : MonoBehaviour {
 
     [SerializeField]
     private Camera camA, camB;
-
+    
     [SerializeField]
     private Texture[] transitionTextures;
     public SpriteRenderer transitionSprite;
@@ -56,6 +56,10 @@ public class screenTransition : MonoBehaviour {
         }
         if (level != -99)
         {
+            //if (level != 0)
+            //{
+            //    DontDestroyOnLoad(BGM.instance);
+            //}
             Application.LoadLevel(level);
         }
     }
