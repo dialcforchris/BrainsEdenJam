@@ -7,6 +7,8 @@ public class star : MonoBehaviour {
 
     public Animator anim;
     public ParticleSystem starPoof;
+    public AudioClip pickupSound;
+    public AudioSource source;
 
     void OnTriggerEnter2D()
     {
