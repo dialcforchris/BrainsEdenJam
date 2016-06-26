@@ -179,6 +179,10 @@ float LowPassWidthInSeconds = 1f;
                 StartCoroutine("Die");
             }
         }
+        else if (_col.tag == "DeathArea")
+        {
+             StartCoroutine("Die");
+        }
     }
 
 }
