@@ -23,10 +23,12 @@ public class LevelSelect : MonoBehaviour {
         {
             if (s.Length > 2)
             {
+                Debug.Log(s);
                 string Levelnum = "" + s[6];
-                string stars = "" + s[s.Length - (s.EndsWith("\n") ? 2 : 1)];
+                string stars = "" + s[s.Length - ((s.EndsWith("\n") || s.EndsWith("\r")) ? 2 : 1)];
                 for (int i = 0; i < int.Parse(stars); i++)
                 {
+                    Debug.Log(Levelnum + "    " + stars);
                     Levels[int.Parse(Levelnum) - 1].Stars[i].sprite = filledStar;
                 }
             }

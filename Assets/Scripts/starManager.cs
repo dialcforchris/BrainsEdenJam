@@ -34,7 +34,6 @@ public class starManager : MonoBehaviour {
         s = sr.ReadToEnd();
         if (s.IndexOf("Level " + Application.loadedLevel) != -1)
         {
-            Debug.Log("removing");
             s = s.Remove(s.IndexOf("Level " + Application.loadedLevel), 10);
         }
         sr.Close();

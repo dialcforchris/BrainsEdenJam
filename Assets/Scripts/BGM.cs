@@ -48,22 +48,21 @@ public class BGM : MonoBehaviour
     {
         MixTracks();
       //  PlayStuff();
-        text.text = count.ToString() ;
       //  DontDestoryMaybe();
 	}
     void MixTracks()
     {
-        playLight.volume = screenTransition.instance.GetVal();
-        playDark.volume = 1 - playLight.volume;
+        if (screenTransition.instance)
+        {
+            playLight.volume = screenTransition.instance.GetVal();
+            playDark.volume = 1 - playLight.volume;
+        }
     }
 
     void PlayStuff()
     {
-      
-       
-         
-        
     }
+
     void DontDestoryMaybe()
     {
         if (nextLevel!=0)
