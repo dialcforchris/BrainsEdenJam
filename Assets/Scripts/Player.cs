@@ -29,8 +29,6 @@ float LowPassWidthInSeconds = 1f;
     [SerializeField] private SpriteRenderer greyRenderer = null;
     [SerializeField] private SpriteRenderer colourRenderer = null;
 
-    private bool changingWorld = false;
-
     private void Awake()
     {
         LowPassFilterFactor = AccelerometerUpdateInterval / LowPassWidthInSeconds; 
@@ -45,7 +43,6 @@ float LowPassWidthInSeconds = 1f;
 	// Update is called once per frame
 	void FixedUpdate () 
     {
-        changingWorld = false;
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Die());
 
@@ -114,7 +111,6 @@ float LowPassWidthInSeconds = 1f;
     {
         if (inGreyWorld != _world)
         {
-            changingWorld = true;
             inGreyWorld = _world;
             Physics2D.IgnoreLayerCollision(8, 10, inGreyWorld);
             Physics2D.IgnoreLayerCollision(9, 10, !inGreyWorld);
@@ -171,24 +167,4 @@ float LowPassWidthInSeconds = 1f;
         DEAD,
         
     }
-
-    void OnTriggerEnter2D(Collider2D _col)
-    {
-        if (state != PlayerStates.DEAD)
-        {
-
-            if (_col.tag == "KillArea")
-            {
-                if (changingWorld)
-                {
-                    Died();
-                }
-            }
-            else if (_col.tag == "DeathArea")
-            {
-                Died();
-            }
-        }
-    }
-
 }
