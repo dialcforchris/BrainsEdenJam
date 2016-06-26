@@ -128,8 +128,9 @@ float LowPassWidthInSeconds = 1f;
     {
         if (playerState != PlayerStates.DEAD)
         {
-            state = PlayerStates.DEAD;
             GetComponent<AudioSource>().PlayOneShot(clip);
+
+            state = PlayerStates.DEAD;
             greyRenderer.enabled = false;
             colourRenderer.enabled = false;
             colourTrail.Stop();
@@ -165,10 +166,12 @@ float LowPassWidthInSeconds = 1f;
     {
         ACTIVE,
         DEAD,
+        
     }
 
     void OnTriggerEnter2D(Collider2D _col)
     {
+        
         if (_col.tag == "KillArea")
         {
             if (changingWorld)
